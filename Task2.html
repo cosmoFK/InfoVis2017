@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <title>Task2</title>
+      </head>
+  <body>
+    <FORM name="fm">
+      座標を入力してください<br>
+  1つ目:x座標<INPUT size="20" type="number" name="A1">
+  y座標<INPUT size="20" type="number" name="A2">
+  z座標<INPUT size="20" type="number" name="A3"><br>
+  2つ目:x座標<INPUT size="20" type="number" name="B1">
+  y座標<INPUT size="20" type="number" name="B2">
+  z座標<INPUT size="20" type="number" name="B3"><br>
+  1つ目:x座標<INPUT size="20" type="number" name="C1">
+  y座標<INPUT size="20" type="number" name="C2">
+  z座標<INPUT size="20" type="number" name="C3"><br>
+  <INPUT type="button" value="面積計算" onclick="cal()">
+  三角形の面積<INPUT size="20" type="number" name="C"><br>
+</FORM>
+    <script src ="vec3.js"></script>
+    <script>
+      function cal(){
+      var x0, y0, z0;
+      var x1, y1, z1;
+      var x2, y2, z2;
+      x0 = document.fm.A1.value;
+      y0 = document.fm.A2.value;
+      z0 = document.fm.A3.value;
+      x1 = document.fm.B1.value;
+      y1 = document.fm.B2.value;
+      z1 = document.fm.B3.value;
+      x2 = document.fm.C1.value;
+      y2 = document.fm.C2.value;
+      z2 = document.fm.C3.value; 
+      var v0 = new Vec3(x0, y0, z0);
+      var v1 = new Vec3(x1, y1, z1);
+      var v2 = new Vec3(x2, y2, z2);
+      var S = AreaOfTriangle(v0, v1,v2);
+      document.fm.C.value = S; 
+      }
+    </script>
+    
+  </body>
+  <html>
