@@ -34,7 +34,7 @@ Vec3.prototype.min = function()
     return u;
 }
 //Max method
-Vec3.prototype.min = function()
+Vec3.prototype.max = function()
 {
     var u =x;
     if(x<y){
@@ -51,5 +51,6 @@ Vec3.prototype.min = function()
 //mid method
 Vec3.prototype.mid = function()
 {
-    return x+y+z-this.min-this.max
+   
+    return this.x+this.y+this.z-this.min()-this.max();
 }
