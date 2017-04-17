@@ -6,7 +6,7 @@ Vec3 = function(x,y,z)
     this.z = z;
 }
 //Add method
-Vec.prototype.add = function(v)
+Vec3.prototype.add = function(v)
 {
     this.x += v.x;
     this.y += v.y;
@@ -14,7 +14,42 @@ Vec.prototype.add = function(v)
     return this;
 }
 //Sum method
-Ve3.prototype.sum = function()
+Vec3.prototype.sum = function()
 {
     return this.x + this.y + this.z;
+}
+//min method
+Vec3.prototype.min = function()
+{
+    var u =x;
+    if(x>y){
+	u=y;
+    }
+    if(y>z){
+	u=z;
+    }
+    if(x>z){
+	u=z
+    }
+    return u;
+}
+//Max method
+Vec3.prototype.min = function()
+{
+    var u =x;
+    if(x<y){
+	u=y;
+    }
+    if(y<z){
+	u=z;
+    }
+    if(x<z){
+	u=z
+    }
+    return u;
+}
+//mid method
+Vec3.prototype.mid = function()
+{
+    return x+y+z-this.min-this.max
 }
