@@ -1,3 +1,4 @@
+document.write("<script type='text/javascript' src='three.min.js'><\/script>");
 function main()
 {
     var width = 500;
