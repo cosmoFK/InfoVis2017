@@ -1,0 +1,109 @@
+<html>
+    <head>
+	<title>W12: task3</title>
+    </head>
+    <body style="margin:0">
+	<script src="three.min.js"></script>
+	<script src="Lut.js"></script>
+	<script src="TrackballControls.js"></script>
+	<script src="KVS.min.js"></script>
+	<script src="KVS2THREE.min.js"></script>
+	<script src="KVSLobsterData.js"></script>
+		<div id="display" style="width: 80%; float: left;"></div> <div id="controller" style="width:20%; float:left;">
+<label id="label" style="font-family:Arial;"></label>
+<input onChange = "changeValue()" type="range" min="0" max="255" step="1" value="100" id="iso"/>
+<span id="val">100</span>
+</div>
+	<script type="x-shader/x-vertex" id="lambertian.vert">
+	  varying vec3 point_color;
+	  varying vec4 point_position;
+	  varying vec3 normal_vector;
+	  uniform vec3 light_position;
+	  uniform vec3 m_color;
+	  
+	  vec3 LambertianReflection(vec3 C,vec3 L,vec3 N)
+	  {
+	  float ka = 0.4;
+	  float kd = 0.6;
+	  
+	  float dd = max( dot(N,L),0.0);
+	  float Ia = ka;
+	  float Id = kd*dd;
+	  return C*(Ia+Id);
+	  }
+	  
+	  void main()
+	  {
+	  point_position = modelViewMatrix * vec4(position, 1.0);
+	  normal_vector = normalMatrix * normal;
+	  
+	  vec3 C = m_color;
+	  vec3 L = normalize( light_position - point_position.xyz);
+	  vec3 N = normalize( normal_vector);
+	  point_color = LambertianReflection(C,L,N);
+	  gl_Position = projectionMatrix * point_position;
+	  }
+	</script>
+	
+	<script type="x-shader/x-fragment" id="lambertian.frag">
+	  varying vec3 point_color;
+	
+	  void main(){
+	  gl_FragColor = vec4(point_color,1.0);
+	  }
+	</script>
+
+	
+	<script src="Bounds.js"></script>
+	<script src="Isosurface_task3.js"></script>
+	<script src="w12_task3.js"></script>
+	<script>
+	  //main();
+	  var volume = new KVS.LobsterData();
+    var screen = new KVS.THREEScreen();
+    var Element =0;
+    screen.init( volume, {
+	width: window.innerWidth * 0.8,
+        height: window.innerHeight,
+	targetDom: document.getElementById('display'),
+        enableAutoResize: false
+    });
+
+    var bounds = Bounds( volume );
+    screen.scene.add( bounds );
+
+    var isovalue = 128;
+	
+    var colorSlider = document.querySelector('input[type = "range"]');
+    var surfaces = Isosurfaces( volume, isovalue, colorSlider.value);
+   
+    screen.scene.add( surfaces );
+    document.addEventListener( 'mousemove', function() {
+        screen.light.position.copy( screen.camera.position );
+    });
+    window.addEventListener( 'resize', function() {
+        screen.resize( [ window.innerWidth * 0.8, window.innerHeight ] );
+    });
+			 screen.loop();
+	  function changeValue(value) {
+	  
+   var geometry = new THREE.Geometry();
+	  var material = new THREE.MeshLambertMaterial();
+	  var cmap = [];
+    for ( var i = 0; i < 256; i++ )
+    {
+     var S = i / 255.0; // [0,1]
+        var R = Math.max( Math.cos( ( S - 1.0 ) * Math.PI ), 0.0 );
+        var G = Math.max( Math.cos( ( S - 0.5 ) * Math.PI ), 0.0 );
+        var B = Math.max( Math.cos( S * Math.PI ), 0.0 );
+        var color = new THREE.Color( R, G, B );
+        cmap.push( [ S, '0x' + color.getHexString() ] );
+    }
+ 
+     surfaces.material.color = new THREE.Color().setHex( cmap[ colorSlider.value ][1] );
+    document.getElementById("val").innerHTML = colorSlider.value;
+}
+	</script>
+	
+    </body>
+</html>
